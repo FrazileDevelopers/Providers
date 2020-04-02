@@ -46,7 +46,9 @@ class _MyAppBar extends StatelessWidget {
     return SliverAppBar(
       title: Text(
         'Catalog',
-        style: Theme.of(context).textTheme.headline5,
+        style: TextStyle(
+          color: Colors.white,
+        ),
       ),
       floating: true,
       actions: [

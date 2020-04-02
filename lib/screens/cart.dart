@@ -8,10 +8,10 @@ class MyCart extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart'),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.pinkAccent,
       ),
       body: Container(
-        color: Colors.yellow,
+        color: Colors.pink,
         child: Column(
           children: [
             Expanded(
@@ -20,7 +20,10 @@ class MyCart extends StatelessWidget {
                 child: _CartList(),
               ),
             ),
-            Divider(height: 4, color: Colors.black),
+            Divider(
+              height: 4,
+              color: Colors.white,
+            ),
             _CartTotal()
           ],
         ),
@@ -32,7 +35,6 @@ class MyCart extends StatelessWidget {
 class _CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var itemNameStyle = Theme.of(context).textTheme.bodyText1;
     var cart = Provider.of<CartModel>(context);
 
     return ListView.builder(
@@ -41,7 +43,9 @@ class _CartList extends StatelessWidget {
         leading: Icon(Icons.done),
         title: Text(
           cart.items[index].name,
-          style: itemNameStyle,
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -51,8 +55,10 @@ class _CartList extends StatelessWidget {
 class _CartTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var hugeStyle =
-        Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 48);
+    var hugeStyle = Theme.of(context).textTheme.subtitle2.copyWith(
+          fontSize: 45.0,
+          color: Colors.white,
+        );
 
     return SizedBox(
       height: 200,
