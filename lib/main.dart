@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:providers/pages/login/login.dart';
-import 'package:providers/providers/firebaseAuthService.dart';
+import 'package:providers/constants/theme.dart';
+import 'package:providers/models/cart.dart';
+import 'package:providers/models/catalog.dart';
+import 'package:providers/screens/cart.dart';
+import 'package:providers/screens/catalog.dart';
+import 'package:providers/screens/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,15 +14,33 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<FirebaseAuthService>(
-      create: (_) => FirebaseAuthService(),
-      child: MaterialApp(
-        title: 'Login',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.pink,
+    // Using MultiProvider is convenient when providing multiple objects.
+    return MultiProvider(
+      providers: [
+        // In this sample app, CatalogModel never changes, so a simple Provider
+        // is sufficient.
+        Provider(create: (context) => CatalogModel()),
+        // CartModel is implemented as a ChangeNotifier, which calls for the use
+        // of ChangeNotifierProvider. Moreover, CartModel depends
+        // on CatalogModel, so a ProxyProvider is needed.
+        ChangeNotifierProxyProvider<CatalogModel, CartModel>(
+          create: (context) => CartModel(),
+          update: (context, catalog, cart) {
+            cart.catalog = catalog;
+            return cart;
+          },
         ),
-        home: Login(),
+      ],
+      child: MaterialApp(
+        title: 'Provider Demo',
+        debugShowCheckedModeBanner: false,
+        theme: appTheme,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MyLogin(),
+          '/catalog': (context) => MyCatalog(),
+          '/cart': (context) => MyCart(),
+        },
       ),
     );
   }
